@@ -39,6 +39,7 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
       password,
     });
 
+    console.log(response);
     if (response.data.error) {
       console.log(response.data.error);
     } else {
