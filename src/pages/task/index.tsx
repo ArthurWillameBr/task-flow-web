@@ -14,14 +14,13 @@ import {
   CheckIcon,
   XIcon,
   SquareCheckBig,
-  LogOut,
 } from "lucide-react";
 import { useAuth } from "@/hooks/useAuth";
 import { Navigate } from "react-router-dom";
+import { AccountMenu } from "@/components/account-menu";
 
 export function TaskPage() {
-  const { signOut, isAuthenticated } = useAuth();
-
+  const { isAuthenticated } = useAuth();
 
   if (!isAuthenticated) {
     return <Navigate to="/sign-in" replace />;
@@ -36,9 +35,7 @@ export function TaskPage() {
             Task <span className="text-primary">Flow</span>
           </p>
         </div>
-        <Button onClick={signOut} variant="default" size="icon">
-          <LogOut />
-        </Button>
+        <AccountMenu />
       </div>
       <div className="flex space-x-2 mb-4">
         <Input placeholder="Buscar tarefa..." className="flex-grow" />
