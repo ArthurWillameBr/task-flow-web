@@ -1,8 +1,8 @@
+import { RouterProvider } from "react-router-dom";
+import { router } from "./routes/router";
+
 export function App() {
   return (
-    <main className="h-screen mx-auto container bg-primary">
-      <p className="text-5xl">Hello World</p>
-    </main>
-  )
+    <RouterProvider router={router}/>
+  );
 }
-
