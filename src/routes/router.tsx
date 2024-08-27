@@ -7,7 +7,7 @@ import { PrivateRoutes } from "./private-routes";
 
 export const router = createBrowserRouter([
   {
-    path: "/home",
+    path: "/",
     element: <PrivateRoutes />,
     children: [{ path: "/home", element: <TaskPage /> }],
   },
