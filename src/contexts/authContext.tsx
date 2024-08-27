@@ -1,12 +1,12 @@
 import { UserProps } from "@/@types/user";
 import { api } from "@/lib/axios";
 import { createContext, ReactNode, useEffect, useState } from "react";
-
 interface AuthContextProps {
   user: UserProps | null;
   signIn: (user: UserProps) => Promise<void>;
   signOut: () => void;
   isAuthenticated: boolean;
+  isLoading: boolean;
 }
 
 interface AuthProviderProps {
@@ -17,6 +17,7 @@ export const AuthContext = createContext({} as AuthContextProps);
 
 export const AuthProvider = ({ children }: AuthProviderProps) => {
   const [user, setUser] = useState<UserProps | null>(null);
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     const loadingStorageData = async () => {
@@ -29,6 +30,7 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
       } else {
         setUser(null);
       }
+      setIsLoading(false);
     };
     loadingStorageData();
   }, []);
@@ -61,7 +63,7 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
 
   return (
     <AuthContext.Provider
-      value={{ signIn, signOut, user, isAuthenticated: !!user }}
+      value={{ signIn, signOut, user, isAuthenticated: !!user, isLoading }}
     >
       {children}
     </AuthContext.Provider>

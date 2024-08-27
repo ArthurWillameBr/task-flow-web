@@ -1,7 +1,17 @@
+import { useAuth } from "@/hooks/useAuth";
 import { SquareCheckBig } from "lucide-react";
-import { Outlet } from "react-router-dom";
+import { Outlet, useNavigate } from "react-router-dom";
 
 export function AuthLayout() {
+
+  const navigate = useNavigate()  
+
+  const {isAuthenticated} = useAuth()
+
+  if (isAuthenticated) {
+    navigate("/home");
+  }
+
   return (
     <div className="grid-cols-2 md:grid md:min-h-screen antialiased ">
     <div className="flex h-full p-3 gap-2 md:gap-0 mb-5 md:mb-0 flex-col justify-between border-r border-foreground/5 bg-muted md:p-10 text-muted-foreground">

@@ -17,9 +17,15 @@ import {
   LogOut,
 } from "lucide-react";
 import { useAuth } from "@/hooks/useAuth";
+import { Navigate } from "react-router-dom";
 
 export function TaskPage() {
-  const { signOut } = useAuth();
+  const { signOut, isAuthenticated } = useAuth();
+
+
+  if (!isAuthenticated) {
+    return <Navigate to="/sign-in" replace />;
+  }
 
   return (
     <div className="container mx-auto p-8 space-y-4">

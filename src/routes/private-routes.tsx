@@ -2,7 +2,11 @@ import { useAuth } from "@/hooks/useAuth"
 import { Navigate, Outlet } from "react-router-dom"
 
 export function PrivateRoutes() {
-    const { isAuthenticated } = useAuth()
+    const { isAuthenticated, isLoading } = useAuth()
 
-    return isAuthenticated ? <Outlet /> : <Navigate to="/sign-in" />
+  if(isLoading) {
+    return <div>Loading...</div>
+  }
+
+    return isAuthenticated ? <Outlet /> : <Navigate to="/sign-in" replace/>
 }
