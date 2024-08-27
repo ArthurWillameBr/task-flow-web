@@ -8,14 +8,31 @@ import {
 } from "@/components/ui/table";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import { PlusIcon, TrashIcon, CheckIcon, XIcon, SquareCheckBig } from "lucide-react";
+import {
+  PlusIcon,
+  TrashIcon,
+  CheckIcon,
+  XIcon,
+  SquareCheckBig,
+  LogOut,
+} from "lucide-react";
+import { useAuth } from "@/hooks/useAuth";
 
 export function TaskPage() {
+  const { signOut } = useAuth();
+
   return (
     <div className="container mx-auto p-8 space-y-4">
-      <div className="flex items-center gap-2">
-      <SquareCheckBig className="size-8" />
-      <p className="font-semibold text-lg">Task <span className="text-primary">Flow</span></p>
+      <div className="flex items-center justify-between">
+        <div className="flex items-center gap-2">
+          <SquareCheckBig className="size-8" />
+          <p className="font-semibold text-lg">
+            Task <span className="text-primary">Flow</span>
+          </p>
+        </div>
+        <Button onClick={signOut} variant="default" size="icon">
+          <LogOut />
+        </Button>
       </div>
       <div className="flex space-x-2 mb-4">
         <Input placeholder="Buscar tarefa..." className="flex-grow" />
