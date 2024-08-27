@@ -1,9 +1,14 @@
 import { SignIn } from "@/pages/auth/signIn";
 import { SignUp } from "@/pages/auth/signUp";
 import { AuthLayout } from "@/pages/layout/auth";
+import { TaskPage } from "@/pages/task";
 import { createBrowserRouter } from "react-router-dom";
 
 export const router = createBrowserRouter([
+    {
+        path: "/home",
+        element: <TaskPage />,
+    },
     {
         path: "/",
         element: <AuthLayout />,
