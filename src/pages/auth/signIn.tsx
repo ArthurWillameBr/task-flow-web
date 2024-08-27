@@ -5,7 +5,7 @@ import { Link } from "react-router-dom";
 
 export function SignIn() {
   return (
-    <div className="mx-auto grid w-[350px] gap-6">
+    <div className="mx-auto grid w-[350px] gap-5">
       <div className="grid gap-2 text-center">
         <h1 className="text-3xl font-bold">Login</h1>
         <p className="text-balance text-muted-foreground">
@@ -27,7 +27,7 @@ export function SignIn() {
           Entrar
         </Button>
       </div>
-      <div className="mt-4 text-center text-sm">
+      <div className="text-center text-sm">
         Não tem uma conta?{" "}
         <Link to="/sign-up" className="underline">
           Cadastre-se
