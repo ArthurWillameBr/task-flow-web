@@ -7,45 +7,20 @@ import { Badge } from "@/components/ui/badge"
 import { DropdownMenu, DropdownMenuTrigger, DropdownMenuContent, DropdownMenuItem } from "@/components/ui/dropdown-menu"
 import { MoveVerticalIcon, Plus } from "lucide-react"
 import { AccountMenu } from "@/components/account-menu"
+import { useQuery } from "@tanstack/react-query"
+import { GetTask } from "@/api/get-tasks"
 
 export function TaskPage() {
   const [search, setSearch] = useState("")
-  const [tasks, setTasks] = useState([
-    {
-      id: 1,
-      title: "Desenvolver a tela de login",
-      status: "Em progresso",
-      priority: "Alta",
-    },
-    {
-      id: 2,
-      title: "Criar o banco de dados",
-      status: "Feito",
-      priority: "Média",
-    },
-    {
-      id: 3,
-      title: "Implementar a funcionalidade de cadastro",
-      status: "Backlog",
-      priority: "Alta",
-    },
-    {
-      id: 4,
-      title: "Testar a aplicação",
-      status: "Cancelado",
-      priority: "Baixa",
-    },
-    {
-      id: 5,
-      title: "Documentar o projeto",
-      status: "Todo",
-      priority: "Média",
-    },
-  ])
+
+  const { data: tasks} = useQuery({
+    queryKey: ["tasks"],
+    queryFn: GetTask,
+  })
+
   const handleSearch = (e: any) => {
     setSearch(e.target.value)
   }
-  const filteredTasks = tasks.filter((task) => task.title.toLowerCase().includes(search.toLowerCase()))
   return (
     <div className="w-full max-w-4xl mx-auto px-4 py-8">
       <div className="flex items-center justify-between mb-6">
@@ -75,11 +50,12 @@ export function TaskPage() {
           </TableRow>
         </TableHeader>
         <TableBody>
-          {filteredTasks.map((task) => (
+          {tasks && tasks.map((task) => (
             <TableRow key={task.id}>
               <TableCell>{task.title}</TableCell>
               <TableCell>
                 <Badge
+                  variant={task.status === "DONE" ? "default" : "destructive"}
                 >
                   {task.status}
                 </Badge>
