@@ -2,7 +2,6 @@ import { UserProps } from "@/@types/user";
 import { api } from "@/lib/axios";
 import { createContext, ReactNode, useEffect, useState } from "react";
 interface AuthContextProps {
-  user: UserProps | null;
   signIn: (user: UserProps) => Promise<void>;
   signOut: () => void;
   isAuthenticated: boolean;
@@ -16,19 +15,18 @@ interface AuthProviderProps {
 export const AuthContext = createContext({} as AuthContextProps);
 
 export const AuthProvider = ({ children }: AuthProviderProps) => {
-  const [user, setUser] = useState<UserProps | null>(null);
+  const [token, setToken] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     const loadingStorageData = async () => {
-      const storageUser = localStorage.getItem("@Auth:user");
       const storageToken = localStorage.getItem("@Auth:token");
 
-      if (storageUser && storageToken) {
-        setUser(JSON.parse(storageUser));
+      if (storageToken) {
+        setToken(storageToken);
         api.defaults.headers.common["Authorization"] = `Bearer ${storageToken}`;
       } else {
-        setUser(null);
+        setToken(null);
       }
       setIsLoading(false);
     };
@@ -45,25 +43,24 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
     if (response.data.error) {
       console.log(response.data.error);
     } else {
-      setUser(response.data.user);
+      const token = response.data.token;
+      setToken(token);
       api.defaults.headers.common[
         "Authorization"
       ] = `Bearer ${response.data.token}`;
 
-      localStorage.setItem("@Auth:user", JSON.stringify(response.data.user));
       localStorage.setItem("@Auth:token", response.data.token);
     }
   };
 
   const signOut = () => {
-    setUser(null);
-    localStorage.removeItem("@Auth:user");
+    setToken(null);
     localStorage.removeItem("@Auth:token");
   };
 
   return (
     <AuthContext.Provider
-      value={{ signIn, signOut, user, isAuthenticated: !!user, isLoading }}
+      value={{ signIn, signOut, isAuthenticated: !!token, isLoading }}
     >
       {children}
     </AuthContext.Provider>
