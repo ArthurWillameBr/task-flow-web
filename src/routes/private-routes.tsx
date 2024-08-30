@@ -8,5 +8,5 @@ export function PrivateRoutes() {
     return <div>Loading...</div>
   }
 
-    return isAuthenticated ? <Outlet /> : <Navigate to="/sign-in" replace/>
+    return isAuthenticated ? <Outlet /> : <Navigate to="/auth/sign-in" replace/>
 }

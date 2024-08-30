@@ -6,7 +6,7 @@ export function AuthLayout() {
 
   const navigate = useNavigate()  
 
-  const {isAuthenticated} = useAuth()
+  const { isAuthenticated } = useAuth()
 
   if (isAuthenticated) {
     navigate("/home");

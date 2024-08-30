@@ -19,8 +19,6 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
   const [user, setUser] = useState<UserProps | null>(null);
   const [isLoading, setIsLoading] = useState(true);
 
-  console.log(user);
-
   useEffect(() => {
     const loadingStorageData = async () => {
       const storageUser = localStorage.getItem("@Auth:user");

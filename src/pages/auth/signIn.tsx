@@ -73,7 +73,7 @@ export function SignIn() {
       </form>
       <div className="text-center text-sm">
         Não tem uma conta?{" "}
-        <Link to="/sign-up" className="underline">
+        <Link to="/auth/sign-up" className="underline">
           Cadastre-se
         </Link>
       </div>
