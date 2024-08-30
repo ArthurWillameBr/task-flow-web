@@ -7,8 +7,8 @@ export function App() {
   return (
     <>
       <AuthProvider>
-        <RouterProvider router={router} />
-        <Toaster richColors />
+          <RouterProvider router={router} />
+          <Toaster richColors />
       </AuthProvider>
     </>
   );

@@ -11,6 +11,7 @@ import { Button } from "./ui/button";
 import { Skeleton } from "./ui/skeleton";
 import { api } from "@/lib/axios";
 import { useEffect, useState } from "react";
+import { toast } from "sonner";
 
 interface TaskProps {
   id: string;
@@ -24,9 +25,10 @@ interface TaskProps {
 interface TaskTableProps {
   tasks: TaskProps[];
   setTasks: (tasks: TaskProps[]) => void;
+  handleDeleteTask: (taskId: string) => void;
 }
 
-export function TaskTable({ tasks, setTasks }: TaskTableProps) {
+export function TaskTable({ tasks, setTasks, handleDeleteTask }: TaskTableProps) {
   const [isLoading, setIsLoading] = useState<boolean>(false);
 
   useEffect(() => {
@@ -43,6 +45,17 @@ export function TaskTable({ tasks, setTasks }: TaskTableProps) {
     };
     getTasks();
   }, []);
+
+  async function handleTurnStatus(taskId: string) {
+    try {
+      await api.patch(`/tasks/${taskId}/turn_status`)
+      window.location.reload()
+      toast.success("Status da tarefa alterado com sucesso")
+    } catch (error) {
+      console.log(error)
+      toast.error("Erro ao alterar status da tarefa")
+    }
+  }
 
   return (
     <Table>
@@ -68,14 +81,21 @@ export function TaskTable({ tasks, setTasks }: TaskTableProps) {
               <TableCell>{task.description}</TableCell>
               <TableCell>
                 {task.completed ? (
-                  <CheckIcon className="text-green-500" />
+                  <Button onClick={() => handleTurnStatus(task.id)}>
+                    <CheckIcon className="text-green-500 cursor-pointer" />
+                    Completa
+                  </Button>
                 ) : (
-                  <XIcon className="text-red-500" />
+                  <Button onClick={() => handleTurnStatus(task.id)}>
+                    <XIcon className="text-red-500 cursor-pointer" />
+                    A fazer
+                  </Button>
                 )}
               </TableCell>
               <TableCell>
-                <Button>
-                  <TrashIcon className="mr-2 h-4 w-4" /> Deletar
+                <Button onClick={() => handleDeleteTask(task.id)}>
+                  <TrashIcon className="mr-2 h-4 w-4" /> 
+                  Deletar
                 </Button>
               </TableCell>
             </TableRow>

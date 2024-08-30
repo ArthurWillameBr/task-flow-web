@@ -4,7 +4,7 @@ import { Button } from "@/components/ui/button";
 import { PlusIcon, SquareCheckBig } from "lucide-react";
 import { AccountMenu } from "@/components/account-menu";
 import { TaskTable } from "@/components/task-table";
-import { z } from "zod";
+import { set, z } from "zod";
 import { useForm } from "react-hook-form";
 import { api } from "@/lib/axios";
 import { toast } from "sonner";
@@ -38,6 +38,17 @@ export function TaskPage() {
       completed: false,
     },
   });
+
+  async function handleDeleteTask(taskId: string) {
+    try {
+      setTasks((prevTasks) => prevTasks.filter((task) => task.id !== taskId));
+      await api.delete(`/tasks/${taskId}`);
+      toast.success("Tarefa deletada com sucesso");
+    } catch (error) {
+      console.log(error);
+      toast.error("Erro ao deletar tarefa");
+    }
+  }
 
   async function handleCreateTask(data: CreateTaskFormSchema) {
     try {
@@ -74,7 +85,11 @@ export function TaskPage() {
           <PlusIcon className="mr-2 h-4 w-4" /> Adicionar
         </Button>
       </form>
-      <TaskTable tasks={tasks} setTasks={setTasks} />
+      <TaskTable
+        tasks={tasks}
+        setTasks={setTasks}
+        handleDeleteTask={handleDeleteTask}
+      />
     </div>
   );
 }
