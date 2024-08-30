@@ -24,7 +24,7 @@ import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { GetTask } from "@/api/get-tasks";
 import { CreateTasks } from "@/api/create-tasks";
 import { useForm, Controller } from "react-hook-form";
-import { z } from "zod";
+import { set, z } from "zod";
 import {
   Dialog,
   DialogClose,
@@ -43,6 +43,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { DeleteTask } from "@/api/delete-tasks";
 
 const taskFormSchema = z.object({
   title: z.string(),
@@ -54,6 +55,8 @@ const taskFormSchema = z.object({
 type TaskForm = z.infer<typeof taskFormSchema>;
 
 export function TaskPage() {
+  const [isDialogOpen, setIsDialogOpen] = useState(false);
+
   const queryClient = useQueryClient();
 
   const { data: tasks } = useQuery({
@@ -65,14 +68,25 @@ export function TaskPage() {
     mutationFn: CreateTasks,
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["tasks"] });
+      setIsDialogOpen(false);
     },
   });
 
+  const { mutateAsync: deleteTask, isPending:  isLoading } = useMutation({
+    mutationFn: DeleteTask,
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["tasks"] });
+    },
+  })
 
   const { register, handleSubmit, control } = useForm<TaskForm>();
 
   async function handleCreateTask(data: TaskForm) {
     await createTask(data);
+  }
+
+  async function handleDeleteTask(id: string) {
+    await deleteTask({ id });
   }
 
   return (
@@ -87,7 +101,7 @@ export function TaskPage() {
           placeholder="Pesquisar tarefas..."
           className="w-full"
         />
-        <Dialog>
+        <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
           <DialogTrigger asChild>
             <Button className="flex items-center gap-2">
               <Plus className="size-5" />
@@ -162,9 +176,7 @@ export function TaskPage() {
                 />
               </div>
               <DialogFooter>
-                <DialogClose>
-                  <Button variant="ghost">Cancelar</Button>
-                </DialogClose>
+                  <Button variant="ghost" onClick={() => setIsDialogOpen(false)}>Cancelar</Button>
                 <Button disabled={isPending} type="submit">Salvar</Button>
               </DialogFooter>
             </form>
@@ -204,7 +216,9 @@ export function TaskPage() {
                     </DropdownMenuTrigger>
                     <DropdownMenuContent align="end">
                       <DropdownMenuItem>Editar</DropdownMenuItem>
-                      <DropdownMenuItem>Excluir</DropdownMenuItem>
+                        <Button variant="ghost" disabled={isLoading} onClick={() => handleDeleteTask(task.id)}>
+                          Excluir
+                        </Button>
                     </DropdownMenuContent>
                   </DropdownMenu>
                 </TableCell>
