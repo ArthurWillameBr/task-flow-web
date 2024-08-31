@@ -37,7 +37,9 @@ export function AccountMenu() {
             {isLoading ? (
               <Skeleton className="h-5 w-24" />
             ) : (
-              capitalizeFirstLetter(profile?.name || "")
+              <p className="truncate w-28 md:w-32">
+                {capitalizeFirstLetter(profile?.name || "")}
+              </p>
             )}
             <ChevronDown className="size-4" />
           </Button>
