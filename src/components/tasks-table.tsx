@@ -22,6 +22,7 @@ import { GetTask } from "@/api/get-tasks";
 import { DeleteTask } from "@/api/delete-tasks";
 import { toast } from "sonner";
 import { TurnTaskStatus, TurnTaskStatusProps } from "@/api/turn-task-status";
+import { TurnTaskPriority, TurnTaskPriorityProps } from "@/api/turn-task-priority";
 
 export function TaskTable() {
   const queryClient = useQueryClient();
@@ -54,6 +55,17 @@ export function TaskTable() {
     await updateTaskStatus({ id, status: newStatus });
   }
 
+  const { mutateAsync: updateTaskPriority } = useMutation({
+    mutationFn: TurnTaskPriority,
+    onSuccess: () => {
+      toast.success("Prioridade da tarefa atualizada com sucesso");
+      queryClient.invalidateQueries({ queryKey: ["tasks"] });
+    }
+  })
+
+  async function handleChangeTaskPriority(id: string, newPriority: TurnTaskPriorityProps["priority"]) {
+    await updateTaskPriority({ id, priority: newPriority });
+  }
 
   return (
     <Table>
@@ -92,7 +104,23 @@ export function TaskTable() {
                 </DropdownMenu>
               </TableCell>
               <TableCell>
-                <TaskPriority priority={task.priority} />
+              <DropdownMenu>
+                  <DropdownMenuTrigger className="outline-none">
+                    <Button asChild variant="ghost" className="w-fit hover:bg-transparent outline-none">
+                      <TaskPriority priority={task.priority} />
+                    </Button>
+                  </DropdownMenuTrigger>
+                  <DropdownMenuContent align="center">
+                  {(["LOW", "MEDIUM", "HIGH"] as TurnTaskPriorityProps["priority"][]).map((priority) => (
+                      <DropdownMenuItem
+                        key={priority}
+                        onClick={() => handleChangeTaskPriority(task.id, priority)}
+                      >
+                        <TaskPriority priority={priority} />
+                      </DropdownMenuItem>
+                    ))}
+                  </DropdownMenuContent>
+                </DropdownMenu>
               </TableCell>
               <TableCell>
                 <DropdownMenu>
