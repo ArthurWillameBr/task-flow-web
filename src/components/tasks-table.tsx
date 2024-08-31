@@ -11,8 +11,9 @@ import {
   DropdownMenuTrigger,
   DropdownMenuContent,
   DropdownMenuItem,
+  DropdownMenuSeparator,
 } from "@/components/ui/dropdown-menu";
-import { LoaderCircle, MoveVerticalIcon } from "lucide-react";
+import { Ellipsis } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { TaskStatus } from "@/components/task-status";
 import { TaskPriority } from "@/components/task-priority";
@@ -39,7 +40,7 @@ export function TaskTable() {
   async function handleDeleteTask(id: string) {
     await deleteTask({ id });
   }
-  
+
   return (
     <Table>
       <TableHeader>
@@ -54,7 +55,9 @@ export function TaskTable() {
         {tasks &&
           tasks.map((task) => (
             <TableRow key={task.id}>
-              <TableCell className="max-w-[188px] truncate">{task.title}</TableCell>
+              <TableCell className="max-w-[188px] truncate">
+                {task.title}
+              </TableCell>
               <TableCell>
                 <TaskStatus status={task.status} />
               </TableCell>
@@ -65,18 +68,19 @@ export function TaskTable() {
                 <DropdownMenu>
                   <DropdownMenuTrigger asChild>
                     <Button variant="ghost" size="icon">
-                      <MoveVerticalIcon className="h-4 w-4" />
+                      <Ellipsis />
                     </Button>
                   </DropdownMenuTrigger>
-                  <DropdownMenuContent align="end">
+                  <DropdownMenuContent align="center">
                     <DropdownMenuItem>Editar</DropdownMenuItem>
-                    <Button
-                      variant="ghost"
+                    <DropdownMenuSeparator />
+                    <DropdownMenuItem
                       disabled={isLoading}
                       onClick={() => handleDeleteTask(task.id)}
                     >
                       Excluir
-                    </Button>
+                      <span className="ml-10">⌫</span>
+                    </DropdownMenuItem>
                   </DropdownMenuContent>
                 </DropdownMenu>
               </TableCell>

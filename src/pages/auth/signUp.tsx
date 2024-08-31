@@ -36,7 +36,7 @@ export function SignUp() {
       });
       toast.success("Cadastro realizado com sucesso", {
         action: {
-          label: "login",
+          label: "fazer login",
           onClick: () => navigate(`/auth/sign-in?email=${email}`),
         },
       });
