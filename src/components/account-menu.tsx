@@ -11,9 +11,20 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { useAuth } from "@/hooks/useAuth";
+import { useQuery } from "@tanstack/react-query";
+import { GetUserProfile } from "@/api/get-profile";
 
 export function AccountMenu() {
-  const { signOut, user, isLoading } = useAuth();
+  const { signOut } = useAuth();
+
+  const { data: profile, isLoading } = useQuery({
+    queryKey: ["profile"],
+    queryFn: GetUserProfile,
+  });
+
+  function capitalizeFirstLetter(string: string) {
+    return string.charAt(0).toUpperCase() + string.slice(1);
+  }
 
   return (
     <>
@@ -23,7 +34,11 @@ export function AccountMenu() {
             variant="outline"
             className="flex select-none items-center gap-2 truncate"
           >
-            {isLoading ? <Skeleton className="h-5 w-24" /> : user?.name}
+            {isLoading ? (
+              <Skeleton className="h-5 w-24" />
+            ) : (
+              capitalizeFirstLetter(profile?.name || "")
+            )}
             <ChevronDown className="size-4" />
           </Button>
         </DropdownMenuTrigger>
@@ -32,7 +47,7 @@ export function AccountMenu() {
           <DropdownMenuSeparator />
           <DropdownMenuGroup>
             <DropdownMenuItem className="flex gap-2">
-              <p className="truncate">{user?.email}</p>
+              <p className="truncate">{profile?.email}</p>
             </DropdownMenuItem>
           </DropdownMenuGroup>
           <DropdownMenuGroup>

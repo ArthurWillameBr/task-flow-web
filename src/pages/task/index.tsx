@@ -24,10 +24,9 @@ import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { GetTask } from "@/api/get-tasks";
 import { CreateTasks } from "@/api/create-tasks";
 import { useForm, Controller } from "react-hook-form";
-import { set, z } from "zod";
+import { z } from "zod";
 import {
   Dialog,
-  DialogClose,
   DialogContent,
   DialogDescription,
   DialogFooter,
