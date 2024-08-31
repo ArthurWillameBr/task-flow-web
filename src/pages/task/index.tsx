@@ -1,4 +1,4 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
+ 
  
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
@@ -22,36 +22,16 @@ import { MoveVerticalIcon, Plus } from "lucide-react";
 import { AccountMenu } from "@/components/account-menu";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { GetTask } from "@/api/get-tasks";
-import { CreateTasks } from "@/api/create-tasks";
-import { useForm, Controller } from "react-hook-form";
-import { z } from "zod";
 import {
   Dialog,
   DialogContent,
   DialogDescription,
-  DialogFooter,
   DialogHeader,
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
-import { Label } from "@/components/ui/label";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
 import { DeleteTask } from "@/api/delete-tasks";
-
-const taskFormSchema = z.object({
-  title: z.string(),
-  description: z.string().nullable(),
-  priority: z.enum(["LOW", "MEDIUM", "HIGH"]),
-  status: z.enum(["TODO", "DONE", "BACKLOG", "IN_PROGRESS", "CANCELLED"]),
-});
-
-type TaskForm = z.infer<typeof taskFormSchema>;
+import { CreateTaskForm } from "@/components/create-task-form";
 
 export function TaskPage() {
   const [isDialogOpen, setIsDialogOpen] = useState(false);
@@ -63,26 +43,12 @@ export function TaskPage() {
     queryFn: GetTask,
   });
 
-  const { mutateAsync: createTask, isPending } = useMutation({
-    mutationFn: CreateTasks,
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["tasks"] });
-      setIsDialogOpen(false);
-    },
-  });
-
   const { mutateAsync: deleteTask, isPending:  isLoading } = useMutation({
     mutationFn: DeleteTask,
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["tasks"] });
     },
   })
-
-  const { register, handleSubmit, control } = useForm<TaskForm>();
-
-  async function handleCreateTask(data: TaskForm) {
-    await createTask(data);
-  }
 
   async function handleDeleteTask(id: string) {
     await deleteTask({ id });
@@ -114,71 +80,7 @@ export function TaskPage() {
                 Adicione uma nova tarefa ao seu gerenciamento.
               </DialogDescription>
             </DialogHeader>
-            <form
-              onSubmit={handleSubmit(handleCreateTask)}
-              className="grid gap-4 py-4"
-            >
-              <div className="grid items-center grid-cols-4 gap-4">
-                <Label htmlFor="title" className="text-right">
-                  Título
-                </Label>
-                <Input className="col-span-3" {...register("title")} />
-              </div>
-              <div className="grid items-center grid-cols-4 gap-4">
-                <Label htmlFor="title" className="text-right">
-                  Descrição
-                </Label>
-                <Input className="col-span-3" {...register("description")} />
-              </div>
-              <div className="grid items-center grid-cols-4 gap-4">
-                <Label htmlFor="status" className="text-right">
-                  Status
-                </Label>
-                <Controller 
-                  name="status"
-                  control={control}
-                  render={({ field }) => (
-                    <Select onValueChange={field.onChange} value={field.value}>
-                      <SelectTrigger>
-                        <SelectValue placeholder="Selecione o status" />
-                      </SelectTrigger>
-                      <SelectContent>
-                        <SelectItem value="TODO">A fazer</SelectItem>
-                        <SelectItem value="DONE">Feito</SelectItem>
-                        <SelectItem value="BACKLOG">Backlog</SelectItem>
-                        <SelectItem value="IN_PROGRESS">Em progresso</SelectItem>
-                        <SelectItem value="CANCELLED">Cancelado</SelectItem>
-                      </SelectContent>
-                    </Select>
-                  )}
-                />
-              </div>
-              <div className="grid items-center grid-cols-4 gap-4">
-                <Label htmlFor="priority" className="text-right">
-                  Prioridade
-                </Label>
-                <Controller
-                  name="priority"
-                  control={control}
-                  render={({ field }) => (
-                    <Select onValueChange={field.onChange} value={field.value}>
-                      <SelectTrigger>
-                        <SelectValue placeholder="Selecione a prioridade" />
-                      </SelectTrigger>
-                      <SelectContent>
-                        <SelectItem value="LOW">Baixa</SelectItem>
-                        <SelectItem value="MEDIUM">Média</SelectItem>
-                        <SelectItem value="HIGH">Alta</SelectItem>
-                      </SelectContent>
-                    </Select>
-                  )}
-                />
-              </div>
-              <DialogFooter>
-                  <Button variant="ghost" onClick={() => setIsDialogOpen(false)}>Cancelar</Button>
-                <Button disabled={isPending} type="submit">Salvar</Button>
-              </DialogFooter>
-            </form>
+            <CreateTaskForm setIsDialogOpen={setIsDialogOpen}/>
           </DialogContent>
         </Dialog>
       </div>
