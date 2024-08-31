@@ -22,6 +22,7 @@ import { GetTask } from "@/api/get-tasks";
 import { DeleteTask } from "@/api/delete-tasks";
 import { CreateTaskDialog } from "@/components/create-task-dialog";
 import { TaskStatus } from "@/components/task-status";
+import { TaskPriority } from "@/components/task-priority";
 
 export function TaskPage() {
   const queryClient = useQueryClient();
@@ -74,7 +75,7 @@ export function TaskPage() {
                  <TaskStatus status={task.status}/>
                 </TableCell>
                 <TableCell>
-                  <Badge>{task.priority}</Badge>
+                  <TaskPriority priority={task.priority}/>
                 </TableCell>
                 <TableCell>
                   <DropdownMenu>
