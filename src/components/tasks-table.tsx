@@ -21,6 +21,7 @@ import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { GetTask } from "@/api/get-tasks";
 import { DeleteTask } from "@/api/delete-tasks";
 import { toast } from "sonner";
+import { TurnTaskStatus, TurnTaskStatusProps } from "@/api/turn-task-status";
 
 export function TaskTable() {
   const queryClient = useQueryClient();
@@ -41,6 +42,19 @@ export function TaskTable() {
     await deleteTask({ id });
   }
 
+  const { mutateAsync: updateTaskStatus } = useMutation({
+    mutationFn: TurnTaskStatus,
+    onSuccess: () => {
+      toast.success("Status da tarefa atualizado com sucesso");
+      queryClient.invalidateQueries({ queryKey: ["tasks"]   });
+    }
+  });
+
+  async function handleChangeTaskStatus(id: string, newStatus: TaskStatus) {
+    await updateTaskStatus({ id, status: newStatus });
+  }
+
+
   return (
     <Table>
       <TableHeader>
@@ -59,7 +73,23 @@ export function TaskTable() {
                 {task.title}
               </TableCell>
               <TableCell>
-                <TaskStatus status={task.status} />
+                <DropdownMenu>
+                  <DropdownMenuTrigger className="outline-none">
+                    <Button asChild variant="ghost" className="w-fit hover:bg-transparent outline-none">
+                      <TaskStatus status={task.status} />
+                    </Button>
+                  </DropdownMenuTrigger>
+                  <DropdownMenuContent align="center">
+                  {(["TODO", "DONE", "BACKLOG", "IN_PROGRESS", "CANCELLED"] as TaskStatus[]).map((status) => (
+                      <DropdownMenuItem
+                        key={status}
+                        onClick={() => handleChangeTaskStatus(task.id, status)}
+                      >
+                        <TaskStatus status={status}/>
+                      </DropdownMenuItem>
+                    ))}
+                  </DropdownMenuContent>
+                </DropdownMenu>
               </TableCell>
               <TableCell>
                 <TaskPriority priority={task.priority} />

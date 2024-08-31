@@ -30,7 +30,7 @@ const taskStatusClasses: Record<TaskStatus, string> = {
 export function TaskStatus({status}: TaskStatusProps) {
     return (
         <Badge className={`flex items-center w-fit gap-2 ${taskStatusClasses[status]}`}>
-        <span className="font-medium text-primary-foreground truncate dark:font-semibold">
+        <span className="font-medium text-primary-foreground truncate dark:font-semibold dark:text-white">
             {taskStatusMap[status]}
         </span>
     </Badge>
