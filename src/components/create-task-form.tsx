@@ -13,16 +13,16 @@ import { Button } from "./ui/button";
 import { z } from "zod";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { CreateTasks } from "@/api/create-tasks";
+import { toast } from "sonner";
 
 const taskFormSchema = z.object({
-  title: z.string(),
+  title: z.string().min(3).max(50),
   description: z.string().nullable(),
   priority: z.enum(["LOW", "MEDIUM", "HIGH"]),
   status: z.enum(["TODO", "DONE", "BACKLOG", "IN_PROGRESS", "CANCELLED"]),
 });
 
 type TaskForm = z.infer<typeof taskFormSchema>;
-
 interface CreateTaskFormProps {
   setIsDialogOpen: (isOpen: boolean) => void;
 }
@@ -35,6 +35,7 @@ export function CreateTaskForm({ setIsDialogOpen }: CreateTaskFormProps) {
   const { mutateAsync: createTask, isPending } = useMutation({
     mutationFn: CreateTasks,
     onSuccess: () => {
+      toast.success("Tarefa criada com sucesso");
       queryClient.invalidateQueries({ queryKey: ["tasks"] });
       setIsDialogOpen(false);
     },
@@ -50,7 +51,7 @@ export function CreateTaskForm({ setIsDialogOpen }: CreateTaskFormProps) {
         <Label htmlFor="title" className="text-right">
           Título
         </Label>
-        <Input id="title" {...register("title")} className="col-span-3" />
+        <Input id="title" {...register("title")} className="col-span-3" required/>
       </div>
       <div className="grid grid-cols-4 items-center gap-4">
         <Label htmlFor="description" className="text-right">
@@ -70,7 +71,7 @@ export function CreateTaskForm({ setIsDialogOpen }: CreateTaskFormProps) {
           name="status"
           control={control}
           render={({ field }) => (
-            <Select onValueChange={field.onChange} value={field.value}>
+            <Select onValueChange={field.onChange} value={field.value} required>
               <SelectTrigger className="col-span-3">
                 <SelectValue placeholder="Selecione o status" />
               </SelectTrigger>
@@ -93,7 +94,7 @@ export function CreateTaskForm({ setIsDialogOpen }: CreateTaskFormProps) {
           name="priority"
           control={control}
           render={({ field }) => (
-            <Select onValueChange={field.onChange} value={field.value}>
+            <Select onValueChange={field.onChange} value={field.value} required>
               <SelectTrigger className="col-span-3">
                 <SelectValue placeholder="Selecione a prioridade" />
               </SelectTrigger>
