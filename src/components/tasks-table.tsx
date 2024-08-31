@@ -12,7 +12,7 @@ import {
   DropdownMenuContent,
   DropdownMenuItem,
 } from "@/components/ui/dropdown-menu";
-import { MoveVerticalIcon } from "lucide-react";
+import { LoaderCircle, MoveVerticalIcon } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { TaskStatus } from "@/components/task-status";
 import { TaskPriority } from "@/components/task-priority";

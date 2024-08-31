@@ -1,4 +1,3 @@
- 
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -9,6 +8,7 @@ import { z } from "zod";
 import { toast } from "sonner";
 import { useNavigate } from "react-router-dom";
 import { ModeToggle } from "@/components/mode-toggle";
+import { LoaderCircle } from "lucide-react";
 
 const signUpSchema = z.object({
   name: z.string(),
@@ -84,7 +84,11 @@ export function SignUp() {
               />
             </div>
             <Button type="submit" disabled={isSubmitting} className="w-full">
-              Cadastrar
+              {isSubmitting ? (
+                <LoaderCircle className="animate-spin" />
+              ) : (
+                "Cadastrar"
+              )}
             </Button>
           </form>
           <div className="text-center text-sm">

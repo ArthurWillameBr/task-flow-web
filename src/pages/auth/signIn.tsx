@@ -4,6 +4,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { useAuth } from "@/hooks/useAuth";
+import { LoaderCircle } from "lucide-react";
 import { useForm } from "react-hook-form";
 import { Link, useSearchParams } from "react-router-dom";
 import { toast } from "sonner";
@@ -75,7 +76,7 @@ export function SignIn() {
               />
             </div>
             <Button type="submit" disabled={isSubmitting} className="w-full">
-              Entrar
+              {isSubmitting ? <LoaderCircle className="animate-spin"/> : "Entrar"}
             </Button>
           </form>
           <div className="text-center text-sm">

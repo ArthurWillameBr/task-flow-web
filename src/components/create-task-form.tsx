@@ -14,6 +14,7 @@ import { z } from "zod";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { CreateTasks } from "@/api/create-tasks";
 import { toast } from "sonner";
+import { LoaderCircle } from "lucide-react";
 
 const taskFormSchema = z.object({
   title: z.string().min(3).max(50),
@@ -51,7 +52,12 @@ export function CreateTaskForm({ setIsDialogOpen }: CreateTaskFormProps) {
         <Label htmlFor="title" className="text-right">
           Título
         </Label>
-        <Input id="title" {...register("title")} className="col-span-3" required/>
+        <Input
+          id="title"
+          {...register("title")}
+          className="col-span-3"
+          required
+        />
       </div>
       <div className="grid grid-cols-4 items-center gap-4">
         <Label htmlFor="description" className="text-right">
@@ -112,7 +118,7 @@ export function CreateTaskForm({ setIsDialogOpen }: CreateTaskFormProps) {
           Cancelar
         </Button>
         <Button disabled={isPending} type="submit">
-          Salvar
+          {isPending ? <LoaderCircle className="animate-spin" /> : "Salvar"}
         </Button>
       </DialogFooter>
     </form>
