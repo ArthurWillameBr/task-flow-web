@@ -54,7 +54,7 @@ export function TaskTable() {
         {tasks &&
           tasks.map((task) => (
             <TableRow key={task.id}>
-              <TableCell>{task.title}</TableCell>
+              <TableCell className="max-w-[188px] truncate">{task.title}</TableCell>
               <TableCell>
                 <TaskStatus status={task.status} />
               </TableCell>
