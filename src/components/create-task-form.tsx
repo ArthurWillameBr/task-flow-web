@@ -46,15 +46,23 @@ export function CreateTaskForm({ setIsDialogOpen }: CreateTaskFormProps) {
 
   return (
     <form onSubmit={handleSubmit(handleCreateTask)} className="grid gap-4 py-4">
-      <div className="grid items-center grid-cols-4 gap-4">
-        <Label className="text-right">Título</Label>
-        <Input className="col-span-3" {...register("title")} />
+      <div className="grid grid-cols-4 items-center gap-4">
+        <Label htmlFor="title" className="text-right">
+          Título
+        </Label>
+        <Input id="title" {...register("title")} className="col-span-3" />
       </div>
-      <div className="grid items-center grid-cols-4 gap-4">
-        <Label className="text-right">Descrição</Label>
-        <Input className="col-span-3" {...register("description")} />
+      <div className="grid grid-cols-4 items-center gap-4">
+        <Label htmlFor="description" className="text-right">
+          Descrição
+        </Label>
+        <Input
+          id="description"
+          {...register("description")}
+          className="col-span-3"
+        />
       </div>
-      <div className="grid items-center grid-cols-4 gap-4">
+      <div className="grid grid-cols-4 items-center gap-4">
         <Label htmlFor="status" className="text-right">
           Status
         </Label>
@@ -63,7 +71,7 @@ export function CreateTaskForm({ setIsDialogOpen }: CreateTaskFormProps) {
           control={control}
           render={({ field }) => (
             <Select onValueChange={field.onChange} value={field.value}>
-              <SelectTrigger>
+              <SelectTrigger className="col-span-3">
                 <SelectValue placeholder="Selecione o status" />
               </SelectTrigger>
               <SelectContent>
@@ -77,7 +85,7 @@ export function CreateTaskForm({ setIsDialogOpen }: CreateTaskFormProps) {
           )}
         />
       </div>
-      <div className="grid items-center grid-cols-4 gap-4">
+      <div className="grid grid-cols-4 items-center gap-4">
         <Label htmlFor="priority" className="text-right">
           Prioridade
         </Label>
@@ -86,7 +94,7 @@ export function CreateTaskForm({ setIsDialogOpen }: CreateTaskFormProps) {
           control={control}
           render={({ field }) => (
             <Select onValueChange={field.onChange} value={field.value}>
-              <SelectTrigger>
+              <SelectTrigger className="col-span-3">
                 <SelectValue placeholder="Selecione a prioridade" />
               </SelectTrigger>
               <SelectContent>
@@ -98,7 +106,7 @@ export function CreateTaskForm({ setIsDialogOpen }: CreateTaskFormProps) {
           )}
         />
       </div>
-      <DialogFooter>
+      <DialogFooter className="mt-4">
         <Button variant="ghost" onClick={() => setIsDialogOpen(false)}>
           Cancelar
         </Button>
