@@ -60,6 +60,19 @@
   }
 }
 
+::-webkit-scrollbar {
+  width: 0.45rem;
+}
+
+::-webkit-scrollbar-track {
+  background: #171717;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #174CDE;
+  border-radius: 999px;
+}
+
 
 @layer base {
   * {
@@ -67,6 +80,6 @@
   }
 
   body {
-    @apply bg-background text-foreground;
+    @apply bg-background text-foreground transition-colors duration-300;
   }
 }

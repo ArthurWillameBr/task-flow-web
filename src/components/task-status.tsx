@@ -22,7 +22,7 @@ const taskStatusMap: Record<TaskStatus, string> = {
 const taskStatusClasses: Record<TaskStatus, string> = {
     TODO: "bg-yellow-500",
     DONE: "bg-green-500",
-    BACKLOG: "bg-black",
+    BACKLOG: "bg-violet-500",
     IN_PROGRESS: "bg-blue-500",
     CANCELLED: "bg-red-500",
 };
@@ -30,7 +30,7 @@ const taskStatusClasses: Record<TaskStatus, string> = {
 export function TaskStatus({status}: TaskStatusProps) {
     return (
         <Badge className={`flex items-center w-fit gap-2 ${taskStatusClasses[status]}`}>
-        <span className="font-medium text-primary-foreground truncate">
+        <span className="font-medium text-primary-foreground truncate dark:font-semibold">
             {taskStatusMap[status]}
         </span>
     </Badge>

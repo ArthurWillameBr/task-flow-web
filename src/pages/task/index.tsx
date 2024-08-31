@@ -3,6 +3,7 @@ import { AccountMenu } from "@/components/account-menu";
 import { CreateTaskDialog } from "@/components/create-task-dialog";
 import { TaskTable } from "@/components/tasks-table";
 import { SquareCheckBig } from "lucide-react";
+import { ModeToggle } from "@/components/mode-toggle";
 
 export function TaskPage() {
   return (
@@ -12,7 +13,10 @@ export function TaskPage() {
           <SquareCheckBig className="size-8" />
           <h1 className="text-2xl font-bold">Task Flow</h1>
         </div>
-        <AccountMenu />
+        <div className="flex items-center gap-2">
+          <AccountMenu />
+          <ModeToggle />
+        </div>
       </div>
       <div className="flex items-center gap-4 mb-6">
         <Input

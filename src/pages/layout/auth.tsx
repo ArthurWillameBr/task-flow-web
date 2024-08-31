@@ -20,7 +20,7 @@ export function AuthLayout() {
         <p className="font-semibold">Task <span className="text-primary">Flow</span></p>
       </div>
       <footer className="text-sm">
-         &copy; task-flow - {new Date().getFullYear()}
+         &copy; task flow - {new Date().getFullYear()}
       </footer>
     </div>
     <div className="flex flex-col justify-center items-center relative">
