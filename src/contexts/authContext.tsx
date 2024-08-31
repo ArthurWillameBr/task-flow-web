@@ -1,4 +1,4 @@
-import { UserProps } from "@/@types/user";
+import {  UserProps } from "@/@types/user"
 import { api } from "@/lib/axios";
 import { createContext, ReactNode, useEffect, useState } from "react";
 interface AuthContextProps {
