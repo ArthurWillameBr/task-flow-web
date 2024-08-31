@@ -1,6 +1,3 @@
- 
- 
-import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import {
@@ -22,22 +19,12 @@ import { MoveVerticalIcon, Plus } from "lucide-react";
 import { AccountMenu } from "@/components/account-menu";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { GetTask } from "@/api/get-tasks";
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-} from "@/components/ui/dialog";
 import { DeleteTask } from "@/api/delete-tasks";
-import { CreateTaskForm } from "@/components/create-task-form";
+import { CreateTaskDialog } from "@/components/create-task-dialog";
 
 export function TaskPage() {
-  const [isDialogOpen, setIsDialogOpen] = useState(false);
-
   const queryClient = useQueryClient();
-
+  
   const { data: tasks } = useQuery({
     queryKey: ["tasks"],
     queryFn: GetTask,
@@ -66,23 +53,7 @@ export function TaskPage() {
           placeholder="Pesquisar tarefas..."
           className="w-full"
         />
-        <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
-          <DialogTrigger asChild>
-            <Button className="flex items-center gap-2">
-              <Plus className="size-5" />
-              Nova Tarefa
-            </Button>
-          </DialogTrigger>
-          <DialogContent className="sm:max-w-[425px]">
-            <DialogHeader>
-              <DialogTitle>Nova Tarefa</DialogTitle>
-              <DialogDescription>
-                Adicione uma nova tarefa ao seu gerenciamento.
-              </DialogDescription>
-            </DialogHeader>
-            <CreateTaskForm setIsDialogOpen={setIsDialogOpen}/>
-          </DialogContent>
-        </Dialog>
+        <CreateTaskDialog />
       </div>
       <Table>
         <TableHeader>
