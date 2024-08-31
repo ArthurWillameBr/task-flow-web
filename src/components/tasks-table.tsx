@@ -21,7 +21,7 @@ import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { GetTask } from "@/api/get-tasks";
 import { DeleteTask } from "@/api/delete-tasks";
 import { toast } from "sonner";
-import { TurnTaskStatus, TurnTaskStatusProps } from "@/api/turn-task-status";
+import { TurnTaskStatus } from "@/api/turn-task-status";
 import { TurnTaskPriority, TurnTaskPriorityProps } from "@/api/turn-task-priority";
 
 export function TaskTable() {
