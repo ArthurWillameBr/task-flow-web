@@ -171,7 +171,7 @@ export function TaskTable() {
                       isDialogOpen={isDialogOpen}
                       setIsDialogOpen={setIsDialogOpen}
                       TaskTrigger={
-                        <p className="flex items-center gap-[46px] text-sm pl-2 rounded-sm w-full p-1 hover:bg-accent">
+                        <p className="flex items-center select-none cursor-pointer gap-[46px] text-sm pl-2 rounded-sm w-full p-1 hover:bg-accent">
                           Editar <Pencil className="size-4" />
                         </p>
                       }
@@ -184,6 +184,7 @@ export function TaskTable() {
                     </TaskDialog>
                     <DropdownMenuSeparator />
                     <DropdownMenuItem
+                    className="cursor-pointer"
                       disabled={isLoading}
                       onClick={() => handleDeleteTask(task.id)}
                     >
