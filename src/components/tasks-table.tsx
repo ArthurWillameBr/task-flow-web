@@ -13,7 +13,7 @@ import {
   DropdownMenuItem,
   DropdownMenuSeparator,
 } from "@/components/ui/dropdown-menu";
-import { Ellipsis } from "lucide-react";
+import { Ellipsis, Pencil } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { TaskStatus } from "@/components/task-status";
 import { TaskPriority } from "@/components/task-priority";
@@ -22,10 +22,18 @@ import { GetTask } from "@/api/get-tasks";
 import { DeleteTask } from "@/api/delete-tasks";
 import { toast } from "sonner";
 import { TurnTaskStatus } from "@/api/turn-task-status";
-import { TurnTaskPriority, TurnTaskPriorityProps } from "@/api/turn-task-priority";
+import {
+  TurnTaskPriority,
+  TurnTaskPriorityProps,
+} from "@/api/turn-task-priority";
+import { TaskDialog } from "./create-task-dialog";
+import { UpdateTaskForm } from "./update-task-form";
+import { useState } from "react";
 
 export function TaskTable() {
   const queryClient = useQueryClient();
+
+  const [isDialogOpen, setIsDialogOpen] = useState(false);
 
   const { data: tasks } = useQuery({
     queryKey: ["tasks"],
@@ -47,8 +55,8 @@ export function TaskTable() {
     mutationFn: TurnTaskStatus,
     onSuccess: () => {
       toast.success("Status da tarefa atualizado com sucesso");
-      queryClient.invalidateQueries({ queryKey: ["tasks"]   });
-    }
+      queryClient.invalidateQueries({ queryKey: ["tasks"] });
+    },
   });
 
   async function handleChangeTaskStatus(id: string, newStatus: TaskStatus) {
@@ -60,10 +68,13 @@ export function TaskTable() {
     onSuccess: () => {
       toast.success("Prioridade da tarefa atualizada com sucesso");
       queryClient.invalidateQueries({ queryKey: ["tasks"] });
-    }
-  })
+    },
+  });
 
-  async function handleChangeTaskPriority(id: string, newPriority: TurnTaskPriorityProps["priority"]) {
+  async function handleChangeTaskPriority(
+    id: string,
+    newPriority: TurnTaskPriorityProps["priority"]
+  ) {
     await updateTaskPriority({ id, priority: newPriority });
   }
 
@@ -87,34 +98,58 @@ export function TaskTable() {
               <TableCell>
                 <DropdownMenu>
                   <DropdownMenuTrigger className="outline-none">
-                    <Button asChild variant="ghost" className="w-fit hover:bg-transparent outline-none">
+                    <Button
+                      asChild
+                      variant="ghost"
+                      className="w-fit hover:bg-transparent outline-none"
+                    >
                       <TaskStatus status={task.status} />
                     </Button>
                   </DropdownMenuTrigger>
                   <DropdownMenuContent align="center">
-                  {(["TODO", "DONE", "BACKLOG", "IN_PROGRESS", "CANCELLED"] as TaskStatus[]).map((status) => (
+                    {(
+                      [
+                        "TODO",
+                        "DONE",
+                        "BACKLOG",
+                        "IN_PROGRESS",
+                        "CANCELLED",
+                      ] as TaskStatus[]
+                    ).map((status) => (
                       <DropdownMenuItem
                         key={status}
                         onClick={() => handleChangeTaskStatus(task.id, status)}
                       >
-                        <TaskStatus status={status}/>
+                        <TaskStatus status={status} />
                       </DropdownMenuItem>
                     ))}
                   </DropdownMenuContent>
                 </DropdownMenu>
               </TableCell>
               <TableCell>
-              <DropdownMenu>
+                <DropdownMenu>
                   <DropdownMenuTrigger className="outline-none">
-                    <Button asChild variant="ghost" className="w-fit hover:bg-transparent outline-none">
+                    <Button
+                      asChild
+                      variant="ghost"
+                      className="w-fit hover:bg-transparent outline-none"
+                    >
                       <TaskPriority priority={task.priority} />
                     </Button>
                   </DropdownMenuTrigger>
                   <DropdownMenuContent align="center">
-                  {(["LOW", "MEDIUM", "HIGH"] as TurnTaskPriorityProps["priority"][]).map((priority) => (
+                    {(
+                      [
+                        "LOW",
+                        "MEDIUM",
+                        "HIGH",
+                      ] as TurnTaskPriorityProps["priority"][]
+                    ).map((priority) => (
                       <DropdownMenuItem
                         key={priority}
-                        onClick={() => handleChangeTaskPriority(task.id, priority)}
+                        onClick={() =>
+                          handleChangeTaskPriority(task.id, priority)
+                        }
                       >
                         <TaskPriority priority={priority} />
                       </DropdownMenuItem>
@@ -130,7 +165,23 @@ export function TaskTable() {
                     </Button>
                   </DropdownMenuTrigger>
                   <DropdownMenuContent align="center">
-                    <DropdownMenuItem>Editar</DropdownMenuItem>
+                    <TaskDialog
+                      title="Atualizar Tarefa"
+                      description="Atualize sua Tarefa"
+                      isDialogOpen={isDialogOpen}
+                      setIsDialogOpen={setIsDialogOpen}
+                      TaskTrigger={
+                        <p className="flex items-center gap-[46px] text-sm pl-2 rounded-sm w-full p-1 hover:bg-accent">
+                          Editar <Pencil className="size-4" />
+                        </p>
+                      }
+                    >
+                      <UpdateTaskForm
+                        setIsDialogOpen={setIsDialogOpen}
+                        taskId={task.id}
+                        task={task}
+                      />
+                    </TaskDialog>
                     <DropdownMenuSeparator />
                     <DropdownMenuItem
                       disabled={isLoading}

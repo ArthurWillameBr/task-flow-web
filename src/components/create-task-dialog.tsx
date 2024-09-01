@@ -8,27 +8,30 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "./ui/dialog";
-import { useState } from "react";
-import { CreateTaskForm } from "./create-task-form";
 
-export function CreateTaskDialog() {
-  const [isDialogOpen, setIsDialogOpen] = useState(false);
+interface TaskDialogProps {
+  title: string;
+  description: string | null;
+  isDialogOpen: boolean;
+  setIsDialogOpen: (isOpen: boolean) => void;
+  children: React.ReactNode;
+  TaskTrigger: React.ReactNode;
+}
+
+export function TaskDialog({children, isDialogOpen, setIsDialogOpen, TaskTrigger, description, title}: TaskDialogProps) {
   return (
     <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
       <DialogTrigger asChild>
-        <Button className="flex items-center gap-2">
-          <Plus className="size-5" />
-          Nova Tarefa
-        </Button>
+        {TaskTrigger}
       </DialogTrigger>
       <DialogContent className="sm:max-w-[425px]">
         <DialogHeader>
-          <DialogTitle>Nova Tarefa</DialogTitle>
+          <DialogTitle>{title}</DialogTitle>
           <DialogDescription>
-            Adicione uma nova tarefa ao seu gerenciamento.
+            {description}
           </DialogDescription>
         </DialogHeader>
-        <CreateTaskForm setIsDialogOpen={setIsDialogOpen} />
+        {children}
       </DialogContent>
     </Dialog>
   );
