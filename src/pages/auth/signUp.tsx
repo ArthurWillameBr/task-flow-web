@@ -14,7 +14,7 @@ const signUpSchema = z.object({
   name: z.string(),
   email: z.string().email(),
   password: z.string().min(6),
-  confirmPassword: z.string().min(6),
+  passwordConfirmation: z.string().min(6),
 });
 
 type SignUpFormSchema = z.infer<typeof signUpSchema>;
@@ -28,13 +28,13 @@ export function SignUp() {
     formState: { isSubmitting },
   } = useForm<SignUpFormSchema>({});
 
-  const handleSignUp = async ({ name, email, password, confirmPassword }: SignUpFormSchema) => {
+  const handleSignUp = async ({ name, email, password, passwordConfirmation }: SignUpFormSchema) => {
     try {
       await api.post("/users", {
         name,
         email,
         password,
-        confirmPassword
+        passwordConfirmation
       });
       toast.success("Cadastro realizado com sucesso", {
         action: {
@@ -93,7 +93,7 @@ export function SignUp() {
                 type="password"
                 placeholder="*******"
                 required
-                {...register("confirmPassword")}
+                {...register("passwordConfirmation")}
               />
             </div>
             <Button type="submit" disabled={isSubmitting} className="w-full">
