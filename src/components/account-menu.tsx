@@ -37,7 +37,7 @@ export function AccountMenu() {
             {isLoading ? (
               <Skeleton className="h-5 w-24" />
             ) : (
-              <p className="truncate w-28 md:w-32">
+              <p className="truncate max-w-28 md:max-w-32">
                 {capitalizeFirstLetter(profile?.name || "")}
               </p>
             )}
