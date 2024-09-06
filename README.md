@@ -41,9 +41,8 @@ $ npm install
 # Existe um arquivo chamado .env.example no projeto. Renomeie-o para .env e configure as variáveis de acordo com seu ambiente.
 
 # No arquivo .env, adicione a string de conexão com a api, como por exemplo:
-para obter acesso a api dessa aplicação, acessar: https://github.com/ArthurWillameBr/task-flow-api
 VITE_API_URL="URL_DA_API_AQUI"
-
+# para obter acesso a api dessa aplicação, acessar: https://github.com/ArthurWillameBr/task-flow-api
 
 # Execute a aplicação em modo de desenvolvimento
 $ npm run dev
