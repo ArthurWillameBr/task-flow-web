@@ -16,7 +16,7 @@ export function TaskPage() {
       <div className="flex items-center justify-between mb-6">
         <div className="flex items-center gap-2">
           <SquareCheckBig className="size-8" />
-          <h1 className="text-2xl font-bold">Task Flow</h1>
+          <h1 className="text-2xl font-bold group">Task <span className="group-hover:text-violet-500 transition-colors duration-300">Flow</span></h1>
         </div>
         <div className="flex items-center gap-2">
           <AccountMenu />
