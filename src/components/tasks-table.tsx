@@ -82,6 +82,7 @@ export function TaskTable() {
     await updateTaskPriority({ id, priority: newPriority });
   }
 
+
   return (
     <Table>
       <TableHeader>

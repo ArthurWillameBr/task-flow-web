@@ -12,7 +12,7 @@ export function TaskPage() {
   const [isDialogOpen, setIsDialogOpen] = useState(false);
 
   return (
-    <div className="w-full max-w-4xl mx-auto px-4 py-8">
+    <div className="w-full max-w-6xl mx-auto px-4 py-8">
       <div className="flex items-center justify-between mb-6">
         <div className="flex items-center gap-2">
           <SquareCheckBig className="size-8" />
@@ -23,9 +23,10 @@ export function TaskPage() {
           <ModeToggle />
         </div>
       </div>
-      <div className="flex items-center gap-4 mb-6">
+      <div className="flex items-center gap-4 mb-6 justify-between">
         <TaskTableFilter />
-        <TaskDialog
+       <div>
+       <TaskDialog
           isDialogOpen={isDialogOpen}
           setIsDialogOpen={setIsDialogOpen}
           title="Nova Tarefa"
@@ -39,6 +40,7 @@ export function TaskPage() {
         >
           <CreateTaskForm setIsDialogOpen={setIsDialogOpen} />
         </TaskDialog>
+       </div>
       </div>
       <TaskTable />
     </div>

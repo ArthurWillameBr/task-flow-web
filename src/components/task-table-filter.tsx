@@ -10,6 +10,7 @@ import {
 import { Controller, useForm } from "react-hook-form";
 import { useSearchParams } from "react-router-dom";
 import { Button } from "./ui/button";
+import { X } from "lucide-react";
 
 const taskTableSchema = z.object({
   status: z.string().optional(),
@@ -31,7 +32,7 @@ export function TaskTableFilter() {
     },
   });
 
-  function handleStatusFilter({ status }: TaskTableProps) {
+  function handleStatusFilter({ status, priority }: TaskTableProps) {
     setSearchParams((state) => {
       if (status) {
         state.set("status", status);
@@ -46,6 +47,13 @@ export function TaskTableFilter() {
 
       return state;
     });
+  }
+  function handleClearFilters() {
+    setSearchParams((state) => {
+      state.delete("status");
+      state.delete("priority");
+      return state;
+    })
   }
 
   return (
@@ -107,6 +115,10 @@ export function TaskTableFilter() {
         }}
       />
       <Button type="submit">Aplicar filtros</Button>
+      <Button className="flex items-center gap-2" type="button" onClick={handleClearFilters} variant="secondary">
+        <X className="size-4" />
+        Remover filtros
+      </Button>
     </form>
   );
 }
