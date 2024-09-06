@@ -11,19 +11,25 @@ interface GetTaskQuery {
   user_id: string;
 }
 interface GetTaskResponse {
-    tasks: GetTaskQuery[];
+  tasks: GetTaskQuery[];
 }
 interface GetTaskParams {
-  status?: string | null
-  priority?: string | null
+  status?: string | null;
+  priority?: string | null;
+  title?: string | null;
 }
 
-export async function GetTask({status, priority}: GetTaskParams): Promise<GetTaskQuery[]> {
+export async function GetTask({
+  status,
+  priority,
+  title,
+}: GetTaskParams): Promise<GetTaskQuery[]> {
   const response = await api.get<GetTaskResponse>("/tasks", {
     params: {
       status,
-      priority
-    }
+      priority,
+      title,
+    },
   });
   return response.data.tasks;
 }

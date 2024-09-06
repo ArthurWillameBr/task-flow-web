@@ -33,15 +33,16 @@ import { useSearchParams } from "react-router-dom";
 
 export function TaskTable() {
   const queryClient = useQueryClient();
-  const [searchParams, setSearchParams ] = useSearchParams()
+  const [searchParams] = useSearchParams()
   const [isDialogOpen, setIsDialogOpen] = useState(false);
 
   const status = searchParams.get("status");
-  const priority = searchParams.get("priority");	  
+  const priority = searchParams.get("priority");	
+  const title = searchParams.get("title");  
 
   const { data: tasks } = useQuery({
-    queryKey: ["tasks", status, priority],
-    queryFn: () => GetTask({status, priority}),
+    queryKey: ["tasks", status, priority, title],
+    queryFn: () => GetTask({status, priority, title}),
   });
   const { mutateAsync: deleteTask, isPending: isLoading } = useMutation({
     mutationFn: DeleteTask,
@@ -81,8 +82,6 @@ export function TaskTable() {
   ) {
     await updateTaskPriority({ id, priority: newPriority });
   }
-
-
   return (
     <Table>
       <TableHeader>

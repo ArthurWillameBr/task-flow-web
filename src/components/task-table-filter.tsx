@@ -15,6 +15,7 @@ import { X } from "lucide-react";
 const taskTableSchema = z.object({
   status: z.string().optional(),
   priority: z.string().optional(),
+  title: z.string().optional()
 });
 
 type TaskTableProps = z.infer<typeof taskTableSchema>;
@@ -24,15 +25,17 @@ export function TaskTableFilter() {
 
   const status = searchParams.get("status");
   const priority = searchParams.get("priority");
+  const title = searchParams.get("title");
 
-  const { handleSubmit, control } = useForm<TaskTableProps>({
+  const {register, handleSubmit, control, reset } = useForm<TaskTableProps>({
     defaultValues: {
       status: status ?? "",
       priority: priority ?? "",
+      title: title ?? ""
     },
   });
 
-  function handleStatusFilter({ status, priority }: TaskTableProps) {
+  function handleStatusFilter({ status, priority, title }: TaskTableProps) {
     setSearchParams((state) => {
       if (status) {
         state.set("status", status);
@@ -44,15 +47,27 @@ export function TaskTableFilter() {
       } else {
         state.delete("priority");
       }
-
+      if (title) {
+        state.set("title", title);
+      } else {
+        state.delete("title");
+      }
+  
       return state;
     });
   }
+  
   function handleClearFilters() {
     setSearchParams((state) => {
       state.delete("status");
       state.delete("priority");
+      state.delete("title");
       return state;
+    })
+    reset({
+      priority: "",
+      status: "",
+      title: ""
     })
   }
 
@@ -65,6 +80,7 @@ export function TaskTableFilter() {
         type="text"
         placeholder="Pesquisar tarefas..."
         className="w-auto"
+        {...register("title")}
       />
       <Controller
         name="status"

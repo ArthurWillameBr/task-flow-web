@@ -10,7 +10,6 @@ import { TaskTableFilter } from "@/components/task-table-filter";
 
 export function TaskPage() {
   const [isDialogOpen, setIsDialogOpen] = useState(false);
-
   return (
     <div className="w-full max-w-6xl mx-auto px-4 py-8">
       <div className="flex items-center justify-between mb-6">
@@ -42,7 +41,7 @@ export function TaskPage() {
         </TaskDialog>
        </div>
       </div>
-      <TaskTable />
+    <TaskTable />
     </div>
   );
 }
