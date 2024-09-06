@@ -29,15 +29,19 @@ import {
 import { TaskDialog } from "./create-task-dialog";
 import { UpdateTaskForm } from "./update-task-form";
 import { useState } from "react";
+import { useSearchParams } from "react-router-dom";
 
 export function TaskTable() {
   const queryClient = useQueryClient();
-
+  const [searchParams, setSearchParams ] = useSearchParams()
   const [isDialogOpen, setIsDialogOpen] = useState(false);
 
+  const status = searchParams.get("status");
+  const priority = searchParams.get("priority");	  
+
   const { data: tasks } = useQuery({
-    queryKey: ["tasks"],
-    queryFn: GetTask,
+    queryKey: ["tasks", status, priority],
+    queryFn: () => GetTask({status, priority}),
   });
   const { mutateAsync: deleteTask, isPending: isLoading } = useMutation({
     mutationFn: DeleteTask,

@@ -1,4 +1,3 @@
-import { Input } from "@/components/ui/input";
 import { AccountMenu } from "@/components/account-menu";
 import { TaskDialog } from "@/components/create-task-dialog";
 import { TaskTable } from "@/components/tasks-table";
@@ -7,6 +6,7 @@ import { ModeToggle } from "@/components/mode-toggle";
 import { CreateTaskForm } from "@/components/create-task-form";
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
+import { TaskTableFilter } from "@/components/task-table-filter";
 
 export function TaskPage() {
   const [isDialogOpen, setIsDialogOpen] = useState(false);
@@ -24,11 +24,7 @@ export function TaskPage() {
         </div>
       </div>
       <div className="flex items-center gap-4 mb-6">
-        <Input
-          type="text"
-          placeholder="Pesquisar tarefas..."
-          className="w-full"
-        />
+        <TaskTableFilter />
         <TaskDialog
           isDialogOpen={isDialogOpen}
           setIsDialogOpen={setIsDialogOpen}

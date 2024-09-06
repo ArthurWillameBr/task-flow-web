@@ -10,12 +10,20 @@ interface GetTaskQuery {
   priority: "LOW" | "MEDIUM" | "HIGH";
   user_id: string;
 }
-
 interface GetTaskResponse {
     tasks: GetTaskQuery[];
 }
+interface GetTaskParams {
+  status?: string | null
+  priority?: string | null
+}
 
-export async function GetTask() {
-  const response = await api.get<GetTaskResponse>("/tasks");
+export async function GetTask({status, priority}: GetTaskParams): Promise<GetTaskQuery[]> {
+  const response = await api.get<GetTaskResponse>("/tasks", {
+    params: {
+      status,
+      priority
+    }
+  });
   return response.data.tasks;
 }
