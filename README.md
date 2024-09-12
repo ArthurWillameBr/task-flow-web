@@ -22,7 +22,7 @@ O Task Flow apresenta um design moderno e responsivo, pensado para oferecer uma 
 - [React.js](https://react.dev/) - Biblioteca JavaScript para construção de interfaces de usuário interativas no frontend.
 - [TypeScript](https://www.typescriptlang.org/) - Superset de JavaScript que adiciona tipagem estática, proporcionando maior segurança e previsibilidade no desenvolvimento.
 - [TailwindCSS](https://tailwindcss.com/) - Framework utilitário de CSS que facilita a criação rápida e consistente de interfaces de usuário estilizadas e responsivas.
-- [Shandcn/UI](https://ui.shadcn.com/) - Coleção de componentes UI flexíveis e acessíveis, projetados para agilizar a construção de interfaces no frontend.
+- [Shandcn/UI](https://ui.shadcn.com/) - Coleção de componentes UI flexíveis e acessíveis.
 - [tanstackQuery](https://tanstack.com/query/latest) - Biblioteca para gerenciamento de estados assíncronos e cache de dados, facilitando o manuseio de requisições de dados no frontend.
 
 ## Rodando a aplicação 🚀
