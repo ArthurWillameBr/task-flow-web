@@ -1,7 +1,6 @@
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { api } from "@/lib/axios";
 import { useForm } from "react-hook-form";
 import { Link } from "react-router-dom";
 import { z } from "zod";
@@ -9,6 +8,8 @@ import { toast } from "sonner";
 import { useNavigate } from "react-router-dom";
 import { ModeToggle } from "@/components/mode-toggle";
 import { LoaderCircle } from "lucide-react";
+import { useMutation } from "@tanstack/react-query";
+import { Register } from "@/api/register";
 
 const signUpSchema = z.object({
   name: z.string(),
@@ -28,24 +29,22 @@ export function SignUp() {
     formState: { isSubmitting },
   } = useForm<SignUpFormSchema>({});
 
-  const handleSignUp = async ({ name, email, password, passwordConfirmation }: SignUpFormSchema) => {
-    try {
-      await api.post("/users", {
-        name,
-        email,
-        password,
-        passwordConfirmation
-      });
+  const { mutateAsync: signUp } = useMutation({
+    mutationFn: Register,
+    onSuccess: (_, variables) => {
+      const { email } = variables;
       toast.success("Cadastro realizado com sucesso", {
         action: {
           label: "fazer login",
           onClick: () => navigate(`/auth/sign-in?email=${email}`),
         },
       });
-    } catch (error) {
-      toast.error("Erro ao realizar cadastro");
     }
-  };
+  })
+
+  async function handleSignUp(data: SignUpFormSchema) {
+    await signUp(data);
+  }
 
   return (
     <div className="relative w-full h-screen">
